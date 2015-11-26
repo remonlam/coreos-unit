@@ -1,0 +1,15 @@
+[Unit]
+Description=Wordpress Web Frontend
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill vfinfo-web-wp1
+ExecStartPre=-/usr/bin/docker rm vfinfo-web-wp1
+ExecStartPre=/usr/bin/docker pull remonlam/vcinfo
+ExecStart=/usr/bin/docker run -rm --name vfinfo-web-wp1 -p 80:80 remonlam/vcinfo /run.sh -D FOREGROUND
+ExecStop=/usr/bin/docker stop vfinfo-web-wp1
+
+[X-Fleet]
+Conflicts=vfinfo-web-wp@*.service
